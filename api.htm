@@ -15,6 +15,8 @@ body{font-family:Verdana, Geneva, sans-serif;font-size:14px;color:#333;width:650
 .param{margin-top:10px;border:1px solid #afc76c;color:#779B39;background-color:#EFF4D4;display:inline-block;width:191px;padding:10px}
 .example{background-color:#e4eff9;border:1px solid #9acbe8;color:#5d93b2;margin-top:15px;padding:10px}
 .sep{border:1px dashed #7e7e7e;margin:10px auto}
+.intro{border: 1px solid #e6c555;background-color: #fdebae;color: #9e660d;padding:10px;margin-top:10px}
+
 {/literal}
 </style>
 </head>
@@ -22,7 +24,7 @@ body{font-family:Verdana, Geneva, sans-serif;font-size:14px;color:#333;width:650
 <body>
 <div id="con">
 <div>请求地址：<span>{$smarty.const.AURL}/api</span></div>
-<div class="param"><p>参数1：返回数据类型</p><p>参数名：type</p><p>可取值：(json|php|text|js)</p><p>默认值：json</p></div>
+<div class="param"><p>参数1：返回数据类型</p><p>参数名：type</p><p>可取值：(json|text|js)</p><p>默认值：json</p></div>
 <div  class="param"><p>参数2：回调函数(JSONP)</p><p>参数名：callback</p><p>可取值：任意字符</p><p>默认值：无</p></div>
 <div  class="param"><p>参数3：要查询的ip地址</p><p>参数名：ip</p><p>可取值：域名或ipv4</p><p>默认值：访者ip</p></div>
 <div class="sep"></div>
@@ -35,7 +37,11 @@ body{font-family:Verdana, Geneva, sans-serif;font-size:14px;color:#333;width:650
 <div  class="example"><div>示例3：查询指定为www.baidu.com的服务器地理位置，并返回json</div>
 <div>{$smarty.const.AURL}/api?ip=www.baidu.com</div></div>
 </div>
-
+<div class="sep"></div>
+<div class="intro">
+本站API支持易于调用的jsonp格式和txt格式作为信息源。<br/>查询速度快，每秒可执行10k次，平均每次查询10ms（不计算网络延时）。<br/>
+为保证所有用户的查询速度，本API规定：普通用户每天可使用10k次查询，有需要的朋友请发送邮件至shengyueming#gmail.com（替换#为@符号，你懂得）。
+</div>
 <div style="display:none"><script>var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cscript src='" 
 + _bdhmProtocol + "hm.baidu.com/h.js%3F494dc19a7475e16f5cadc8e54ac98976' type='text/javascript'%3E%3C/script%3E"));</script></div>
 </body>

@@ -27,8 +27,14 @@ class ip2location {
 		$msg .= '<br/>Info:' . $info;
 		$this->wrong_mode ? die ( $msg ) : '';
 	}
+	function affected_rows(){
+		$result=$this->db_resource->affected_rows;
+		$result==-1?$this->dbwrong('affected_rows wrong'):'';
+		return $result;
+	}
 	function querydb($sql, $wrongmsg = '', $querytype = MYSQLI_ASSOC) {
 		$result = $this->db_resource->query ( $sql );
+//var_dump($result);
 		$result === false ? $this->dbwrong ( $wrongmsg ) : '';
 		if (is_object ( $result )) {
 			while ( $resultset = $result->fetch_array ( $querytype ) )
