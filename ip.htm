@@ -39,7 +39,7 @@
   {if $goto!=0}<li id="einfo"><a href="javascript:;">附加信息</a></li>{/if}
   {if $goto!=0} <li  id="minfo"><a href="javascript:;">地图</a></li>{/if}
  {if $goto==1} <li  id="winfo1"><a href="javascript:;">{$ip1|truncate:26:"...":true}的Whois</a></li>{/if}
-  {if $goto!=0}<li id="winfo2"><a href="javascript:;" >{$ip2}的Whois</a></li>{/if}
+  {if $goto!=0}<li id="winfo2"><a href="javascript:;" >{$ip2|truncate:20:"...":true}的Whois</a></li>{/if}
   </ul>
   </div>
 
