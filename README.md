@@ -1,4 +1,3 @@
 ip
-==
 
-ip finder at ip.blueera.net
+ip geolocation system  at ip.blueera.net
