@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="author" content="蓝色年代,swimm" />
+<meta name="keywords" content="ip查询，ip查询系统，ip地址查询，专业ip查询，本机ip查询，域名查询，whois查询，ip地理位置查询" />
+<meta name="description" content="ip位置查询，ip地址查询，域名查询，最准确的ip查询系统，ip查询，whois查询，最专业的ip查询系统，本机ip查询，手机IP查询，ip查询配地图，ipwhois查询,ip查询api" />
+<link rel="stylesheet" href="{$smarty.const.AURL}/static/common.css" />
+<link rel="icon"  href="{$smarty.const.AURL}/static/images/favicon.ico"/>
+<link rel="shortcut icon" href="{$smarty.const.AURL}/static/images/favicon.ico"/>
+<title>IP查询系统-{if $ip1}{$ip1}-{/if}蓝色年代-做最专业的IP查询系统</title>
+</head>
+
+<body>
+<div id="head">
+  <div id="top"><a href="{$smarty.const.AURL}/{$yourip}" title="点击查询我的IP">你的IP{$yourip}来自{$youraddr}</a><a id="moreinfo" href="javascript:;">更多<span class="barrow"></span></a>
+  <div class="top_r"><a href="#">版本{$version}</a><a href="{$smarty.const.AURL}/api?action=show" title="使用本站IP数据库">API</a></div>
+  </div>
+  <div class="myinfo"><span>浏览器 {$browser.img}{$browser.title}</span><span>操作系统 {$os.img}{$os.title}</span><span>北京时间 <cite id="stime"></cite></span><span>你的时间 <cite  id="ctime"></cite></span></div>
+  <a href="{$smarty.const.AURL}/"> <img src="{$smarty.const.AURL}/static/images/title.png" id="title" alt="Title"/></a> </div>
+<div id="container">
+<ul id="dialog">
+      <li style="display:inline-block">全网最准确的中文ip数据库，任意网址和IPV4都可以搜索，试着输入‘myip’看看吧！</li>
+      <li>配合高效的API，在哪都能应用本站随时更新的最新数据</li>
+      <li>配合最权威的地图展示，以及全世界各地互联网官方机构whois数据</li>
+    </ul>
+  <div id="ipform">
+  <div id="autofill"></div>
+
+      <input type="text" name="ip" id="ipfield" autocomplete="off" {if $goto==0}value="{$ip1}"{/if}/>
+      <button  id="ipbutton" class="sbutton"></button>
+	  </div>
+
+  {if $smarty.get}
+  <div class="resultset">
+  <div class="resulttab">
+  <ul id="tablist">
+  <li class="current" id="binfo"><a href="javascript:;">基本信息</a></li>
+  {if $goto!=0}<li id="einfo"><a href="javascript:;">附加信息</a></li>{/if}
+  {if $goto!=0} <li  id="minfo"><a href="javascript:;">地图</a></li>{/if}
+ {if $goto==1} <li  id="winfo1"><a href="javascript:;">{$ip1|truncate:26:"...":true}的Whois</a></li>{/if}
+  {if $goto!=0}<li id="winfo2"><a href="javascript:;" >{$ip2}的Whois</a></li>{/if}
+  </ul>
+  </div>
+
+  <div id="result"> 
+{if $goto===0}
+<div id="noresult">请输入正确的域名或ip</div>
+{else}	
+<div class="line">{$ip1}<span class="arrow"></span>{$ip2}</div>
+	<table class="basicresult">
+	
+	<tr><th>IP地址</th><th>国家/地区</th><th>地区</th><th>城市</th><th>运营商</th></tr>
+	<tr><td>{$ip2}</td>
+	<td title="{$lo.cename}">{$lo.ccname}{$cflag}</td>
+	<td title="{$lo.rename}">{$lo.rcname}</td>
+	<td>{$lo.ci}</td>
+	<td>{$lo.isp}</td></tr>
+	</table>
+  </div>
+  <div id="extra">
+  <div class="line">{$ip1}<span class="arrow"></span>{$ip2}</div>
+  <table class="extraresult">
+	<tr><td class="etitle">IP唯一码(MOD 2)</td><td>{$lo.binip}</td></tr>
+	<tr><td class="etitle">IP唯一码(MOD 16)</td><td>{$lo.hexip}</td></tr>
+	<tr><td class="etitle">IP唯一码(MOD 10)</td><td>{$lo.intip}</td></tr>
+  </table>
+
+
+ {/if}
+   </div>
+  <div id="whois"></div>
+  <div id="map"></div>
+
+  </div>
+  {/if}
+  
+</div>
+<div class="backcover"></div>
+<div id="foot">
+{if !$smarty.get}
+<div id="flink">
+<a href="https://www.arin.net/">ARIN (American Registry for Internet Numbers)</a>
+<a href="http://www.apnic.net/">APNIC(Asia-Pacific Network Information Center)</a>
+<a href="http://www.ripe.net/">RIPE NCC(Réseaux IP Européens Network Coordination Centre)</a>
+<a href="http://www.lacnic.net">LACNIC(Latin American and Caribbean Internet Addresses Registry)</a>
+<a href="http://www.afrinic.net/">AFRINIC(African Network Information Center)</a>
+</div>
+{/if}
+<div id="footer"> Processed in {$processtime}s. IP Geolocation Finder©2008-2012 blueera.net <a href="{$smarty.const.AURL}/list-1">网站地图</a></div>
+ </div>
+ <div style="display:none"><script>var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F494dc19a7475e16f5cadc8e54ac98976' type='text/javascript'%3E%3C/script%3E"));</script></div>
+
+<script src="{$smarty.const.AURL}/static/_j.js"></script>
+<script src="{$smarty.const.AURL}/static/newsticker.js"></script>
+<script src="http://maps.googleapis.com/maps/api/js?sensor=false&language=zh-cn"></script> 
+<script>
+var ip1='{$ip1}';
+var ip2='{$ip2}';
+var loadimg='<img src="{$smarty.const.AURL}/static/images/loading.gif" alt="loading" id="loading"/>';
+var map_s_address="{$lo.cename} {$lo.rename} {$lo.ci}";
+var map_msg=ip1+'<br/>来自{$lo.ccname}{$lo.rcname}{$lo.ci}<br/>蓝色年代IP查询系统';
+time({$timenow*1000});
+
+{if $lo.ci!=''}
+var mapzoom=11;
+{elseif $lo.rcname!=''}
+var mapzoom=6;
+{else}
+var mapzoom=3;
+{/if}
+
+
+
+{literal}
+footReplace();
+$('#moreinfo,.myinfo').mouseover(function () {
+    $('.myinfo').css({
+        left: $('#moreinfo').offset().left - 20
+    }).show();
+    $('#moreinfo').addClass('seemore');
+    $('.barrow').removeClass().addClass('uarrow');
+}).mouseout(function () {
+    $('.myinfo').hide();
+    $('#moreinfo').removeClass('seemore');
+    $('.uarrow').removeClass().addClass('barrow');
+});
+
+$('#tablist').delegate('li', 'click', function () {
+    var mid = $(this).attr('id');
+    switch (mid) {
+        case 'binfo':
+            var showobj = $('#result');
+            break;
+        case 'einfo':
+            var showobj = $('#extra');
+            break;
+        case 'minfo':
+            var showobj = $('#map');
+            loadmap(map_s_address, map_msg, mapzoom);
+            break;
+        case 'winfo1':
+            var showobj = $('#whois');
+            requestWhois(ip1);
+            break;
+        case 'winfo2':
+            var showobj = $('#whois');
+            requestWhois(ip2);
+            break;
+    }
+    showobj.fadeIn();
+    showobj.siblings(':not(.resulttab)').hide();
+    $(this).addClass('current');
+    $(this).siblings().removeClass('current');
+    footReplace();
+
+});
+
+(function ($) {
+
+    var inputField = $('#ipfield');
+    $.fn.checksubmit = function () {
+        $obj = $(this);
+        this.click(function () {
+            var inputValue = inputField.val();
+
+            if (/^[\w]+:\/\/(.*)/.test(inputValue)) {
+                inputValue = inputValue.substr(inputValue.indexOf('://') + 3);
+            }
+            if (inputValue.indexOf('/') > -1) {
+                inputValue = inputValue.substr(0, inputValue.indexOf('/'));
+            }
+            inputField.val(inputValue);
+            var origin = window.location.href;
+            window.location.href = origin.substr(0, origin.lastIndexOf('/') + 1) + inputValue;
+        }).mouseover(function () {
+            $obj.addClass('sbton');
+        }).mouseout(function () {
+            $obj.removeClass('sbton');
+        });
+        inputField.keyup(function (e) {
+            if (e.keyCode === 13) {
+                $obj.click();
+            }
+        });
+    }
+
+    var autofill = $("#autofill");
+    $.fn.setautofill = function () {
+        this.click(function () {
+            var chis = getcookie('search_history');
+            if (chis) chis = chis.split('|');
+            var boxVal = '<ul><li><a href="javascript:;" class="delautoitem">+删除查询记录+</a></li>'
+            for (var i in chis) {
+                if (chis[i] != undefined) boxVal += '<li><a href="javascript:;" class="autoitem">' + chis[i] + '</a></li>';
+                else break;
+            }
+            autofill.html(boxVal + '</ul>');
+            autofill.mouseover(function () {
+                $(this).show()
+            }).mouseout(function () {
+                $(this).hide()
+            });
+            autofill.show();
+        }).mouseout(function () {
+            autofill.hide();
+        });
+    }
+})(jQuery);
+
+function back_in() {
+    var wheight = $(window).height();
+
+    wheight < $('body').height() ? $(".backcover").css("height", $('body').height() + "px") : $(".backcover").css("height", wheight + "px");
+    $(".backcover").css({
+        "opacity": 0.5
+    }).fadeIn(500);
+}
+
+function time(timeNow) {
+    var sDate = new Date(timeNow);
+    var cDate = new Date();
+    var cTimeZone = cDate.getTimezoneOffset() / 60 * (-1);
+    cTimeZone = cTimeZone > 0 ? '+' + cTimeZone : cTimeZone;
+    sTime = sDate.getHours()+':'+sDate.getMinutes()+':'+sDate.getSeconds();
+    cTime =  cDate.getHours()+':'+cDate.getMinutes()+':'+cDate.getSeconds();
+	cTime = cTime.replace(/(\b\d\b)/g,'0$1')+ ' (GMT' + cTimeZone + ')';
+	sTime = sTime.replace(/(\b\d\b)/g,'0$1');
+    $("#stime").text(sTime);
+    $("#ctime").text(cTime);
+    setTimeout("time(" + (timeNow + 1800) + ")", 1800);
+}
+
+function delcookie(name) {
+    var exp = new Date();
+    exp.setTime(exp.getTime() - 1);
+    document.cookie = name + "=;expires=" + exp.toGMTString();
+}
+
+function getcookie(name){
+	var cname='/(^| )'+name+'=([^;]*)(;|$)/';
+	var s=document.cookie.match(eval(cname));
+	return s==null?'':unescape(s[2]);
+}
+function requestWhois(ip) {
+    $("#whois").html(loadimg).fadeIn();
+    $.ajax({
+        url: './whois/_whois.php?q=' + ip,
+        type: 'get',
+        //cache: false,
+        success: function (data) {
+            $("#whois").html(data);
+        }
+    });
+}
+
+
+function loadmap(address, info, mapzoom) {
+    $("#map").html(loadimg).fadeIn();
+    var geocoder = new google.maps.Geocoder();
+    if (geocoder) {
+        geocoder.geocode({
+            'address': address
+        }, function (results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+                //var latlng = new google.maps.LatLng(results[0].geometry.location);
+                var myOptions = {
+                    zoom: mapzoom,
+                    center: results[0].geometry.location,
+                    mapTypeId: google.maps.MapTypeId.ROADMAP
+                }
+                var map = new google.maps.Map(document.getElementById("map"), myOptions);
+                var infowindow = new google.maps.InfoWindow({
+                    content: info
+                });
+                //map.setCenter(results[0].geometry.location);
+                var marker = new google.maps.Marker({
+                    map: map,
+                    position: results[0].geometry.location
+                });
+                infowindow.open(map, marker);
+                $("#maploading").hide();
+                $("#map").show();
+            } else {
+                $("#maploading").hide();
+                $("#map").html("无地图");
+
+            }
+        });
+    }
+}
+
+function footReplace() {
+    if ($(window).height() > $('body').height()) $("#foot").css({
+        "top": ($(window).height() - $('body').height()) + "px",
+        'visibility': 'visible'
+    });
+    else $("#foot").css({
+        'visibility': 'visible'
+    });
+}
+
+
+$('.autoitem').live('click', function () {
+    $('#ipfield').val($(this).text());
+    $('#autofill').hide();
+});
+$('.delautoitem').live('click', function () {
+    delcookie('search_history');
+    $('#autofill').hide();
+});
+
+$(window).resize(function () {
+    footReplace()
+});
+
+$('#ipfield').setautofill();
+$('#ipbutton').checksubmit();
+$("#dialog").newsticker();
+{/literal}
+</script> 
+
+</body>
+</html>
