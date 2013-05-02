@@ -5,7 +5,8 @@ $action = strtolower(gpcr ( 'action', 'g' ));
 $type = strtolower(gpcr ( 'type', 'g' ));
 $ip = gpcr ( 'ip', 'g' );
 $callback = gpcr ( 'callback', 'g' );
-$timenow=time();
+$key=gpcr('k','g');
+define('NOKEY_PERDAY',10000);
 
 if($action=='show'){
 	$tpl->display('api.htm');
@@ -15,14 +16,20 @@ $ipl = new ip2location($db,false);
 $userip=$ipl->getip();
 $loc = $ipl->getlocation ( $ip );
 $api = array ();
+$date=date('Ymd');
+$timenow=time();
 if ($loc ['type'] != 0){
 	$api ['code'] = 0;
 	$ipl->querydb ( "INSERT INTO `sitehistory` VALUES(null,'{$userip}','{$loc['in1']}',{$timenow},2)" );
-	}
+}
 else
 	$api ['code'] = 1;
 
+//查询用户api
+$e_sql=empty($key)?"`userip`='{$userip}'":"`key`='{$key}'";
+echo $count_before=$ipl->querydb("SELECT count FROM `api_user` WHERE `date`={$date} AND {$e_sql}");
 
+//generate array
 $api['ip']=$loc['in2'];
 $api['country']=$loc['ccname'];
 $api['province']=$loc['rcname'];

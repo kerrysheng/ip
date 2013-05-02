@@ -1,9 +1,9 @@
 <?php
 
 /*
-* IP FINDER
-* PROGRAMMED BY SWIMM
-* DATE:2013/1/18
+* IP GEOLOCATION SYSTEM
+* WRITTEN BY SWIMM
+* DATE:2013/5/2
 */
 error_reporting(E_ALL & ~ E_NOTICE);
 
