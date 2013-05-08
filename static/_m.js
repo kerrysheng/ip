@@ -120,9 +120,7 @@ function time(timeNow) {
 }
 
 function delcookie(name) {
-    var exp = new Date();
-    exp.setTime(exp.getTime() - 10000);
-    document.cookie = name + "=;expires=" + exp.toGMTString();
+   return document.cookie = name + "=;expires=" + new Date((new Date().getTime() - 10000)).toGMTString();
 }
 
 function getcookie(name) {

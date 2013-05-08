@@ -17,26 +17,29 @@ if ($action == 'show') {
 } else {
 	$ipl = new ip2location ( $db, false );
 	$userip = $ipl->getip ();
-	
+	$referer= preg_match('/^(?:[\w]{2,}:\/\/)([^\/\:\#\?]*)/',$_SERVER['HTTP_REFERER'],$ref);
 	$date = date ( 'Ymd' );
 	$timenow = time ();
 	$api = array ();
 	$api ['code'] = 0;
 	// 查询用户资格
-	$e_sql = empty ( $key ) ? "`userip`='{$userip}'" : "`key`='{$key}'";
-	$count_before = $ipl->querydb ( "SELECT count FROM `api_user` WHERE `date`={$date} AND {$e_sql}" );
-	if ($count_before [0] [count] > 0 && $count_before [0] [count] < NOKEY_PERDAY) {
-		$ipl->querydb ( "UPDATE `api_user` SET `count`=`count`+1  WHERE `date`={$date} AND {$e_sql}" );
+	//$e_sql = empty ( $key ) ? "`userip`='{$userip}'" : "`key`='{$key}'";
+	$e_sql =!empty($key)?$key:($referer?$ref[1]:$userip);
+	//die($e_sql);
+	$count_before = $ipl->querydb ( "SELECT count FROM `api_user` WHERE `date`={$date} AND `identify`='{$e_sql}'" );
+	if ($count_before [0] ['count'] > 0 && $count_before [0] ['count'] < NOKEY_PERDAY) {
+		$ipl->querydb ( "UPDATE `api_user` SET `count`=`count`+1  WHERE `date`={$date} AND `identify`='{$e_sql}'" );
 		$can_search = true;
 	} elseif ($count_before [0] [count] == 0) {
-		$ipl->querydb ( "INSERT INTO `api_user` VALUES (null,'{$userip}','{$key}','{$date}',1)" );
+		$ipl->querydb ( "INSERT INTO `api_user` VALUES (null,'{$e_sql}','{$date}',1)" );
 		$can_search = true;
 	} else {
 		$can_search = false;
 		$api ['code'] = 1;
 		$api ['msg'] = $err_op [1];
 	}
-	
+
+	//有使用权限	
 	if ($can_search) {
 		$loc = $ipl->getlocation ( $ip );
 		
@@ -54,7 +57,8 @@ if ($action == 'show') {
 			$api ['msg'] = $err_op [2];
 		}
 	}
-	
+
+	//制定输出格式	
 	switch ($type) {
 		case 'text' :
 			header ( 'Content-Type:text/plain' );
