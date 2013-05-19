@@ -2,7 +2,7 @@
 require_once ("include.php");
 
 $num = gpcr ( 'num', 'g', '1' );
-$pagesize = 1000;
+$pagesize = 500;
 $ipl = new ip2location($db);
 $rc = $ipl->queryfirst ( "select  count(distinct search) as count from sitehistory" );
 $totalnum = $rc ['count'];
@@ -11,7 +11,7 @@ $num > $totalp ? $num = $totalp : ($num < 1 ? $num = 1 : '');
 
 $offset = ($num - 1) * $pagesize;
 
-$res = $ipl->querydb ( "select distinct search from sitehistory order by time desc limit {$offset},{$pagesize}" );
+$res = $ipl->querydb ( "select `search` from `sitehistory` group by `search` order by `id` desc limit {$offset},{$pagesize}" );
 
 $tpl->assign ( 'tp', $totalp );
 $tpl->assign ( 'list', $res );
