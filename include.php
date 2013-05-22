@@ -9,8 +9,9 @@ error_reporting(E_ALL & ~ E_NOTICE);
 
 define(DS, DIRECTORY_SEPARATOR);
 define('SROOT', dirname(__file__) . DS);
-define('AURL', 'http://' . $_SERVER['HTTP_HOST'] . substr($_SERVER['REQUEST_URI'], 0, strrpos($_SERVER['REQUEST_URI'], '/')));
+//define('AURL', 'http://' . $_SERVER['HTTP_HOST'] . substr($_SERVER['REQUEST_URI'], 0, strrpos($_SERVER['REQUEST_URI'], '/')));
 date_default_timezone_set ( 'asia/shanghai' );
+define ('AURL','.');
 
 require_once (SROOT . "template/Smarty.class.php");
 require_once (SROOT . 'ip.class.php');

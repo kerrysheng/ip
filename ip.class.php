@@ -53,18 +53,15 @@ class ip2location {
 	}
 	function getip() {
 		$ip = false;
-		if (! empty ( $_SERVER ['HTTP_CLIENT_IP'] ))
-			$ip = $_SERVER ['HTTP_CLIENT_IP'];
+		// if (! empty ( $_SERVER ['HTTP_CLIENT_IP'] ))
+		// 	$ip = $_SERVER ['HTTP_CLIENT_IP'];
 		
-		if (! empty ( $_SERVER ['HTTP_X_FORWARDED_FOR'] )) {
-			$ips = explode ( ", ", $_SERVER ['HTTP_X_FORWARDED_FOR'] );
-			if ($ip) {
-				array_unshift ( $ips, $ip );
-				$ip = false;
-			}
-			for($i = 0; $i < count ( $ips ); $i ++) {
-				if (ip2long ( $ips [$i] ) != false) {
-					$ip = $ips [$i];
+		if ( $_SERVER ['HTTP_X_FORWARDED_FOR'] ) {
+			$ips = explode ( ",", $_SERVER ['HTTP_X_FORWARDED_FOR'] );
+			foreach($ips as $isip) {
+				$isip=trim ( $isip );
+				if ($isip&& $isip!= 'unknown') {
+					$ip = $isip;
 					break;
 				}
 			}

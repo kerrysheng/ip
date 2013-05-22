@@ -7,7 +7,6 @@
 require_once ("include.php");
 $st = $timerun->start ();
 // session_start;
-
 $as ['version'] = '4.1'; // Version
 $as ['timenow'] = time();
 
