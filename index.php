@@ -1,13 +1,13 @@
 <?php
 
 /*
- * IP FINDER. PROGRAMMED BY SWIMM.
- * DATE:2013/1/18
+ * IP GEOLOCATION FINDER. PROGRAMMED BY SWIMM.
+ * LM:2013/5/23
  */
 require_once ("include.php");
 $st = $timerun->start ();
 // session_start;
-$as ['version'] = '4.1'; // Version
+$as ['version'] = '4.2'; // Version
 $as ['timenow'] = time();
 
 $ipl = new ip2location ( $db );
