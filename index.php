@@ -2,12 +2,12 @@
 
 /*
  * IP GEOLOCATION FINDER. PROGRAMMED BY SWIMM.
- * LM:2013/5/23
+ * LM:2013/8/24
  */
 require_once ("include.php");
 $st = $timerun->start ();
 // session_start;
-$as ['version'] = '4.2'; // Version
+$as ['version'] = '4.3'; // Version
 $as ['timenow'] = time();
 
 $ipl = new ip2location ( $db );
