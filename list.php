@@ -2,7 +2,7 @@
 require_once ("include.php");
 
 $num = gpcr ( 'num', 'g', '1' );
-$pagesize = 500;
+$pagesize = 200;
 $ipl = new ip2location($db);
 $rc = $ipl->queryfirst ( "select  count(distinct search) as count from sitehistory" );
 $totalnum = $rc ['count'];

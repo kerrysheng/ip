@@ -6,7 +6,7 @@ $type = strtolower ( gpcr ( 'type', 'g' ) );
 $ip = gpcr ( 'ip', 'g' );
 $callback = gpcr ( 'callback', 'g' );
 $key = gpcr ( 'k', 'g' );
-define ( 'NOKEY_PERDAY', 10000 );
+define ( 'NOKEY_PERDAY', 1000 );
 $err_op = array (
 		1 => '已超过查询次数',
 		2 => 'IP或域名错误' 
