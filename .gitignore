@@ -2,4 +2,4 @@
 templates_c
 *.swp
 *.txt
-
+sftp-config.json

@@ -18,26 +18,26 @@ require_once (SROOT . 'ip.class.php');
 require_once (SROOT . 'ip.func.php');
 require_once (SROOT . 'config.php');
 
-class runtime {
-    var $StartTime = 0;
-    var $StopTime = 0;
-    function get_microtime() {
-        $mtime = array_sum(explode(" ", microtime()));
-        return (float)$mtime;
-    }
-    function start() {
-        $this->StartTime = $this->get_microtime();
-    }
-    function stop() {
-        $this->StopTime = $this->get_microtime();
-    }
-    function spent() {
-        $ttime = $this->StopTime - $this->StartTime;
-        return number_format($ttime, 4);
-        ;
-    }
-}
+// class runtime {
+//     var $StartTime = 0;
+//     var $StopTime = 0;
+//     function get_microtime() {
+//         $mtime = array_sum(explode(" ", microtime()));
+//         return (float)$mtime;
+//     }
+//     function start() {
+//         $this->StartTime = $this->get_microtime();
+//     }
+//     function stop() {
+//         $this->StopTime = $this->get_microtime();
+//     }
+//     function spent() {
+//         $ttime = $this->StopTime - $this->StartTime;
+//         return number_format($ttime, 4);
+//         ;
+//     }
+// }
 
-$db = new mysqli($_CONFIG['db']['server'], $_CONFIG['db']['user'], $_CONFIG['db']['password'], $_CONFIG['db']['database']);
+//$db = new mysqli($_CONFIG['db']['server'], $_CONFIG['db']['user'], $_CONFIG['db']['password'], $_CONFIG['db']['database']);
 $tpl = new smarty();
-$timerun = new runtime();
+//$timerun = new runtime();
