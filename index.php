@@ -7,12 +7,14 @@
 require_once ("include.php");
 
 
-$a=new ip2loc(new PDO('mysql:host=localhost;dbname=test','root','123456'));
+$a=new ip2loc($db);
 //$a->test();
 //echo $a::bit_compare('11010010','11010010');
-//echo $a::is_ipv6_v4mapped('::ffff:255.255.255.255')?'a':'b';
+//echo $a::is_url('.a.com')?'a':'b';
 //echo $a::ip2hex('::ff00');
-echo $a->getcalculateip('1.3.3.254')?'a':'b';
+$a->getlocation('twitter.com');
+var_dump($a->getresult());
+//var_dump($a::is_ipv46_reserved('10.1.1.1',4));
 //$st = $timerun->start ();
 // session_start;
 //$as ['version'] = '4.3'; // Version
