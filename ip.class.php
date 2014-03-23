@@ -8,9 +8,9 @@
 class ip2loc {
 	//ip category
 	const IP_IPV4=0x1001;
-	const IP_IPV4_BINARY=0x1002;
-	const IP_IPV4_OCTET=0x1003;
-	const IP_IPV4_HEX=0x1004;
+	//const IP_IPV4_BINARY=0x1002;
+	//const IP_IPV4_OCTET=0x1003;
+	//const IP_IPV4_HEX=0x1004;
 	const IP_IPV4_INT=0x1005;
 	const IP_IPV4_RESERVED=0x1006;
 
@@ -21,16 +21,16 @@ class ip2loc {
 	const IP_IPV6_RESERVED=0x2005;
 
 	const IP_URL=0x3001;
-	const URL_IPV4=0x3002;
-	const URL_IPV6=0x3003;
+	const IP_URL_NOIP=0X3002;
+	const IP_NOT_CALC_IP=0x3003;
 
 	const IP_UNINITIAL=0xF00;
 	const IP_INVALID=0xF01;
 	//const IP_IPV4_INVALID=0xF02;
 	//const IP_IPV6_INVALID=0xF03;
 
-	const URL_UNINITIAL=0xF10;
-	const URL_INVALID=0xF11;
+	//const URL_UNINITIAL=0xF10;
+	//const URL_INVALID=0xF11;
 
 	//ip tables
 	const IP_BLOCK_TABLE='block';
@@ -38,14 +38,14 @@ class ip2loc {
 	const IP_COUNTRY_TABLE='country';
 	
 	//ip table columns
-	const FIELD_IP_START='f1';
-	const FIELD_IP_END='f2';
+	const FIELD_IP_START='start';
+	const FIELD_IP_END='end';
 	//const FIELD_IP_COUNTRY='';
 	//const FIELD_IP_COUNTRY_FULLNAME='';
 	const FIELD_LOC_REGION_ENAME='rname';
 	const FIELD_LOC_CITY='ciname';
 	const FIELD_IP_ISP='';
-	const FIELD_IP_GEOID='geo_id';
+	const FIELD_IP_GEOID='locid';
 	const FIELD_LOC_GEOID='gid';
 	const FIELD_LOC_CONTINENT='cocode';
 	const FIELD_LOC_COUNTRY_CODE='ccode';
@@ -55,16 +55,18 @@ class ip2loc {
 	const FIELD_COUNTRY_CNAME='ccname';
 
 	//fields of output
+	const O_IP_TYPE='type';
+	const O_IP_RAW_VALUE='raw';
 	const O_IPV4_NORMAL='ipv4';
 	const O_IPV6_V4MAPPED='ipv6v4mapped';
 	const O_IPV6_NORMAL='ipv6';
-	const O_DB_CONTINENT_CODE='dbcontinentcode';
-	const O_DB_COUNTRY_CODE='dbcountrycode';
-	const O_DB_COUNTRY_ALPHA3='dbcountryalpha3';
-	const O_DB_COUNTRY_ENAME='dbcountryename';
-	const O_DB_COUNTRY_CNAME='dbcountrycname';
-	const O_DB_REGION_ENAME='dbregionename';
-	const O_DB_CITY='dbcityename';
+	// const O_DB_CONTINENT_CODE='dbcontinentcode';
+	// const O_DB_COUNTRY_CODE='dbcountrycode';
+	// const O_DB_COUNTRY_ALPHA3='dbcountryalpha3';
+	// const O_DB_COUNTRY_ENAME='dbcountryename';
+	// const O_DB_COUNTRY_CNAME='dbcountrycname';
+	// const O_DB_REGION_ENAME='dbregionename';
+	// const O_DB_CITY='dbcityename';
 	const O_URL_DOMAIN='domain';
 	const O_URL_DNSTYPE='dnstype';
 	const O_URL_RESOLVEIP='ip';
@@ -81,13 +83,10 @@ class ip2loc {
 	private $location =array();
 	private $wrong_mode;
 	private $ip_type=self::IP_UNINITIAL;
-	private $url_type=self::URL_UNINITIAL;
+	//private $url_type=self::URL_UNINITIAL;
 
-
-	//regexp of ip or url
-	// public static $regexp_domain = '#^(?:[A-Za-z]+://)?((?:[\w\-]+\.)+(?:com|net|org|gov|int|edu|cn|info|cc|name|biz|tv|cn|mobi|sh|ac|io|tw|hk|ws|travel|us|tm|la|in|eu|it|jp|co|me|mx|ca|ag|am|asia|at|be|bz|de|es|fm|gs|jobs|ms|nl|nu|tc|tk|vg|ad|ae|af|ai|al|an|ao|aq|ar|as|au|aw|az|ba|bb|bd|bf|bg|bh|bi|bj|bm|bn|bo|br|bs|bt|bv|bw|by|cd|cf|cg|ch|ci|ck|cl|cm|cr|cu|cv|cx|cy|cz|dj|dk|dm|do|dz|ec|ee|eg|er|et|fi|fj|fk|fo|ga|gd|ge|gf|gg|gh|gi|gl|gm|gn|gp|gq|gr|gt|gu|gw|gy|hm|hn|hr|ht|hu|id|ie|il|im|iq|ir|is|je|jm|jo|ke|kg|kh|ki|km|kn|kr|kw|ky|kz|lb|lc|li|lk|lr|ls|lt|lu|lv|ly|ma|mc|md|mg|mh|mk|ml|mm|mn|mo|mp|mq|mr|mt|mu|mv|mw|my|mz|na|nc|ne|nf|ng|ni|no|np|nr|nz|om|pa|pe|pf|pg|ph|pk|pl|pm|pn|pr|ps|pt|pw|py|qa|re|ro|ru|rw|sa|sb|sc|sd|se|sg|si|sk|sl|sm|sn|sr|st|sv|sy|sz|td|tf|tg|th|tj|tl|tn|to|tr|tt|tz|ua|ug|uk|uy|uz|va|vc|ve|vi|vn|vu|wf|ye|yt|yu|za|zm|zw))(?::(\d)+)?(?:/.*)?$#';
 	public static $regexp_domain ='/^(([a-z0-9-]+)\.)+([a-z]{2,6})$/i';
-	public static $regexp_ipv4 = '/^(0?0?\d|0?[1-9]\d|1\d\d|2[0-4]\d|25[0-5])(\.(0?0?\d|0?[1-9]\d|1\d\d|2[0-4]\d|25[0-5])){3}$/';
+	//public static $regexp_ipv4 = '/^(0?0?\d|0?[1-9]\d|1\d\d|2[0-4]\d|25[0-5])(\.(0?0?\d|0?[1-9]\d|1\d\d|2[0-4]\d|25[0-5])){3}$/';
 
 	//https://en.wikipedia.org/wiki/Reserved_IP_addresses
 	private static $reserved_ipv4=array(
@@ -175,8 +174,8 @@ class ip2loc {
 
 		return self::bit_compare($ax,$bx);
 	}
-	//convert CIDR formatted ip to its first and last ip address
-	//compatible with ipv4/ipv6 and netmask compatible like /16 or 255.0.0.0
+	//convert CIDR formatted ip to its first and last ip addresses
+	//compatible with ipv4/ipv6 and the netmask is compatible which like 16 or 255.255.0.0
 	//type maybe 0,1,2 
 	public static function cidr2range($ipaddr,$netmask,$type=2){
 		if(self::is_ipv4($ipaddr)){
@@ -219,10 +218,10 @@ class ip2loc {
 		}
 		return array("first"=>$firstip,"end"=>$endip);
 	}
-	public static function parse_url_like($url=''){
+	public static function parse_url_like($url){
 		if(strpos($url,'://')===false)$url='http://'.$url;
 
-		return parse_url($url)===false?flase:parse_url($url);
+		return ($url_arr=parse_url($url))===false?false:$url_arr;
 	}
 	public  static function is_ipv4($ip){
 		return filter_var($ip,FILTER_VALIDATE_IP,FILTER_FLAG_IPV4)===false?false:true;
@@ -232,8 +231,9 @@ class ip2loc {
 	}
 	public static function is_url($url){
 		//return preg_match(self::$regexp_domain, $url)==false?false:true;
-		$parsed_arr=self::parse_url_like($url);
-		return $parsed_arr!==false&&preg_match(self::$regexp_domain, $parsed_arr['host']);
+		 $parsed_arr=self::parse_url_like($url);
+		 //var_dump($parsed_arr);
+		return $parsed_arr&&array_key_exists('host', $parsed_arr)&&preg_match(self::$regexp_domain, $parsed_arr['host']);
 	}
 
 	//improved version that widely used comparing to ripe defined ipv4-mapped ipv6
@@ -286,18 +286,24 @@ class ip2loc {
 		return inet_ntop(pack("H*",$ip));
 	}
 
-	public function getiptype($ip){
-		if($this->ip_type!=self::IP_UNINITIAL)return false;
-
+	private function getiptype(){
+		//if($this->ip_type!=self::IP_UNINITIAL)return false;
+		 $ip=$this->raw;
 
 		if(self::is_ipv6_v4mapped($ip)){
 			$this->ip_type=self::IP_IPV6_V4MAPPED;
 		}elseif(self::is_ipv6($ip)){	
-			$this->ip_type=self::IP_IPV6;	
+			$this->ip_type=self::IP_IPV6;
+			if(self::is_ipv46_reserved($ip,6))
+				$this->ip_type=self::IP_IPV6_RESERVED;	
 		}elseif(self::is_ipv4_int($ip)){
 			$this->ip_type=self::IP_IPV4_INT;
+			if(self::is_ipv46_reserved(long2ip($ip)))
+				$this->ip_type=self::IP_IPV4_RESERVED;
 		}elseif (self::is_ipv4($ip)) {
 			$this->ip_type=self::IP_IPV4;
+			if(self::is_ipv46_reserved($ip))
+				$this->ip_type=self::IP_IPV4_RESERVED;
 		}elseif(self::is_url($ip)){
 			$this->ip_type=self::IP_URL;
 		}else{
@@ -306,10 +312,8 @@ class ip2loc {
 		return $this->ip_type;
 	}
 
-	public function getaddrip($data=''){
-		if($this->ip_type==self::IP_UNINITIAL)return false; 
-		if(!$data)$data=$this->raw;
-		if(!$data)return false;
+	private function getaddrip(){
+		$data=$this->raw;
 
 		switch ($this->ip_type) {
 			case self::IP_IPV4:
@@ -322,25 +326,23 @@ class ip2loc {
 			case self::IP_IPV6_V4MAPPED:
 				$trans_ip=$data;
 			break;
-			// case self::IP_URL:
-
-			// break;
 			default:
-			$trans_ip=false;
+			return false;
 		}
 
-		return $trans_ip===false?false:inet_pton($trans_ip);
+		return inet_pton($trans_ip);
 		
 	}
 
-	public function getcalculateip($input=''){
-		if($this->ip_type==self::IP_UNINITIAL){
-			if(!$input)return;
-			else{
-				$this->getiptype($input);
-				$ip=$input;
-			}
-		}else $ip=$this->raw;
+	public function getcalculateip($input){
+		if(!$input)return false;
+		
+		$this->raw=$input;	
+		$this->getiptype();
+		
+		$ip=$input;
+			
+
 		
 		switch ($this->ip_type) {	
 			case self::IP_IPV6_V4MAPPED:
@@ -352,18 +354,16 @@ class ip2loc {
 			case self::IP_IPV4_INT:
 			$ip=long2ip($ip);
 			break;
-			case self::IP_INVALID:
-			return false;
 		}
-		$hexip=self::ip2hex($ip);
+		
 		switch($this->ip_type){
 			case self::IP_IPV6_V4MAPPED:
 			case self::IP_IPV4_INT:
 			case self::IP_IPV4:
-			//default:
+			$hexip=self::ip2hex($ip);
 			$this->ips[self::O_IPV4_NORMAL]['normal']=$ip;
 			$this->ips[self::O_IPV4_NORMAL]['hex']='0x'.$hexip;
-			$this->ips[self::O_IPV4_NORMAL]['int']=hexdec($hexip);
+			$this->ips[self::O_IPV4_NORMAL]['int']=(string)hexdec($hexip);
 			$this->ips[self::O_IPV4_NORMAL]['bin']=self::bit_hex2bin($hexip);
 			$this->ips[self::O_IPV4_NORMAL]['octet']='0'.base_convert($hexip, 16, 8);
 			$this->ips[self::O_IPV6_V4MAPPED]['normal']='::ffff:'.$ip;
@@ -373,7 +373,7 @@ class ip2loc {
 			break;
 			
 			case self::IP_IPV6:
-			//$hexip=self::ip2hex($ip);
+			$hexip=self::ip2hex($ip);
 			//normal ipv6 is a full-bit hexadecimal
 			$twodimen_array_ip=array_chunk(str_split($hexip), 4);
 			$array_ip_uncompress=array_map(function($v){
@@ -388,38 +388,62 @@ class ip2loc {
 			$this->ips[self::O_IPV6_NORMAL]['compressd']=implode(':',$array_ip_compress);
 				
 			break;
-			// default:
-			// return false;
+			default:
+			$this->ip_type=self::IP_NOT_CALC_IP;
 		}
 
 		//var_dump($this->ips);
 	}
 
 	private function querydb($addrip){
-		$sql="select * from (SELECT * FROM `".self::IP_BLOCK_TABLE."` WHERE '{$addrip}' >=`".self::FIELD_IP_START."` order by `".self::FIELD_IP_START."` desc limit 3) as a,`".self::IP_LOC_TABLE."` as b,`".self::IP_COUNTRY_TABLE."` as c where '{$addrip}'<=a.".self::FIELD_IP_END." and a.geo_id=b.gid and b.ccode=c.alpha2 limit 1";
+
+		switch($this->ip_type){
+			case self::IP_IPV4_RESERVED:
+			case self::IP_IPV6_RESERVED:
+			$this->reservedquery();
+			return false;
+			break;
+			default:
+			$sql="select * from (SELECT * FROM `".self::IP_BLOCK_TABLE."` WHERE '{$addrip}' >=`".self::FIELD_IP_START."` order by `".self::FIELD_IP_START."` desc limit 3) as a,`".self::IP_LOC_TABLE."` as b,`".self::IP_COUNTRY_TABLE."` as c where '{$addrip}'<=a.".self::FIELD_IP_END." and a.".self::FIELD_IP_GEOID."=b.".self::FIELD_LOC_GEOID." and b.".self::FIELD_LOC_COUNTRY_CODE."=c.".self::FIELD_COUNTRY_CODE." limit 1";
+		}
+		
 		//echo $sql;
 
 		$result_set=self::$db->query($sql);
-		
-		//var_dump($result);
-		if($result_set!==false){
-			$result=$result_set->fetch(PDO::FETCH_ASSOC);
-			if($result!==false){
-			$this->ips[self::O_DB_CONTINENT_CODE]=$result[self::FIELD_LOC_CONTINENT];
-			$this->ips[self::O_DB_COUNTRY_CODE]=$result[self::FIELD_LOC_COUNTRY_CODE];
-			$this->ips[self::O_DB_COUNTRY_ALPHA3]=$result[self::FIELD_COUNTRY_ALPHA3];
-			$this->ips[self::O_DB_COUNTRY_ENAME]=$result[self::FIELD_COUNTRY_ENAME];
-			$this->ips[self::O_DB_COUNTRY_CNAME]=$result[self::FIELD_COUNTRY_CNAME];
-			$this->ips[self::O_DB_REGION_ENAME]=$result[self::FIELD_LOC_REGION_ENAME];
-			$this->ips[self::O_DB_CITY]=$result[self::FIELD_LOC_CITY];
-			}else{
+	
+		$this->getdbresult($result_set);
 
+	}
+	private function getdbresult($pdostatement){
+
+		if($pdostatement!==false){
+			$result=$pdostatement->fetch(PDO::FETCH_ASSOC);
+			if($result!==false){
+				//var_dump($result);
+				$this->ips=array_merge($this->ips,$result);
+			// $this->ips[self::O_DB_CONTINENT_CODE]=$result[self::FIELD_LOC_CONTINENT];
+			// $this->ips[self::O_DB_COUNTRY_CODE]=$result[self::FIELD_LOC_COUNTRY_CODE];
+			// $this->ips[self::O_DB_COUNTRY_ALPHA3]=$result[self::FIELD_COUNTRY_ALPHA3];
+			// $this->ips[self::O_DB_COUNTRY_ENAME]=$result[self::FIELD_COUNTRY_ENAME];
+			// $this->ips[self::O_DB_COUNTRY_CNAME]=$result[self::FIELD_COUNTRY_CNAME];
+			// $this->ips[self::O_DB_REGION_ENAME]=$result[self::FIELD_LOC_REGION_ENAME];
+			// $this->ips[self::O_DB_CITY]=$result[self::FIELD_LOC_CITY];
+			}else{
+				$this->reservedquery();
 			}
-			
-			//var_dump($this->ips);
 		}else{
 			$this->set_wrong_db_msg();
 		}
+		
+	}
+	private function reservedquery(){
+
+		$sql='select * from '.self::IP_COUNTRY_TABLE.' where '.self::FIELD_COUNTRY_CODE.'="zz"';
+
+		$result_set=self::$db->query($sql);
+
+		$this->getdbresult($result_set);
+
 	}
 	public static function  getip() {
 		$ip = false;
@@ -438,43 +462,33 @@ class ip2loc {
 		}
 		return $ip ? $ip : $_SERVER ['REMOTE_ADDR'];
 	}
-	//get domain's URLs (only A and AAAA)(ipv4/ipv6)
-	public function resolvedomain($domain=''){
-		if($this->ip_type==self::IP_UNINITIAL){
-			if(!$domain)return;
-			else{
-				$input=$domain;
-			}
-		}
-		else $input=$this->raw;
+	//get every location of ip that got by dns
+	private function getdomainlocation(){
+		if($this->ip_type==self::IP_URL)
+			$input=$this->raw;
+		else return false;
 
 		$parsed=self::parse_url_like($input);
-		if($parsed&&($host=$parsed['host'])){
-			 return $resolved=dns_get_record($host,DNS_A|DNS_AAAA);
-
-		}else{
-			return false;
-		}
+		if($parsed&&($host=$parsed['host']))
+			 $dnsresult=dns_get_record($host,DNS_A|DNS_AAAA);
+		else return false;
 		
-	}
-	//get every location of ip that got by dns
-	private function getdomainlocation($dnsresult){
-		$count=count($dnsresult);
-		if($count<=0)return false;
-
+		if(!$count=count($dnsresult))$this->ip_type=self::IP_URL_NOIP;
+		$domains=array();
 		for($k=0;$k<$count;$k++){
 			//if($dnsresult[k]['type']
 			$type=$dnsresult[$k]['type'];
-			$ip= $type==='AAAA'?$dnsresult[$k]['ipv6']:$dnsresult[$k]['ip'];
+			 $ip= $type==='AAAA'?$dnsresult[$k]['ipv6']:$dnsresult[$k]['ip'];
 			$theipinfo=self::_instance();
 			$theipinfo->getlocation($ip);
-			$theipinfo->getcalculateip();
-			$this->ips[$k][self::O_URL_DOMAIN]=$dnsresult[$k]['host'];
-			$this->ips[$k][self::O_URL_DNSTYPE]=$type;
-			$this->ips[$k][self::O_URL_RESOLVEIP]=$ip;
-			$this->ips[$k][self::O_URL_IPRESULT]=$theipinfo->getresult();
-
+			//$theipinfo->getcalculateip($ip);
+			$domains[$k][self::O_URL_DOMAIN]=$dnsresult[$k]['host'];
+			$domains[$k][self::O_URL_DNSTYPE]=$type;
+			$domains[$k][self::O_URL_RESOLVEIP]=$ip;
+			//$dbresult=$theipinfo->getresult();
+			$domains[$k]=array_merge($domains[$k],$theipinfo->getresult());
 		}
+		$this->ips['result']=$domains;
 		//var_dump($this->domains);
 	}
 	public static function _instance($db=null){
@@ -482,33 +496,32 @@ class ip2loc {
 		return new self($db?$db:self::$db);
 	}
 	// entrance
-	public function getlocation($input=''){
-		if(self::IP_UNINITIAL==$this->ip_type&&!$input)return false;
-		elseif($input){
-			$this->raw=$input;
-			$this->getiptype($input);
-		}
-				
-		//echo $this->raw;
-		
+	public function getlocation($input){
+		if(!$input)return false;
 
+			$this->raw=$input;
+			$this->getiptype();
+					
+		//echo $this->raw;
 		switch ($this->ip_type) {
 			case self::IP_URL:
-			$this->getdomainlocation($this->resolvedomain());
+			$this->getdomainlocation();
 			break;
 			case self::IP_IPV6_V4MAPPED:
 			case self::IP_IPV4_INT:
 			case self::IP_IPV4:
 			case self::IP_IPV6:
-
-			return $this->querydb($this->getaddrip());
+			case self::IP_IPV4_RESERVED:
+			case self::IP_IPV6_RESERVED:
+			$this->querydb($this->getaddrip());
 			break;
 			case self:IP_INVALID:
 			return false;
-
 		}
 	}
 	public function getresult(){
+		$this->ips[self::O_IP_TYPE]=$this->ip_type;
+		$this->ips[self::O_IP_RAW_VALUE]=$this->raw;
 		return $this->ips;
 	}
 	public function getlastinput(){

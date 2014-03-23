@@ -10,50 +10,152 @@
  */
 require_once 'include.php';
 
-//$action = strtolower ( gpcr ( 'action', 'g' ) );
-
-
-
 $type = strtolower ( gpcr ( 'type', 'g' ) );
 $ip = trim(gpcr ( 'ip', 'g' ));
 $callback = gpcr ( 'callback', 'g' );
-//$key = gpcr ( 'k', 'g' );
+$api=array();
 
-
-// if ($action == 'show') {
-// 	$tpl->display ( 'api.htm' );
-// } else {
-// 	$ipl = new ip2location ( $db, false );
-// 	$userip = $ipl->ge
 if($type=='show'){
 
 }else{
-	$referer= preg_match('/^(?:[\w]{2,}:\/\/)([^\/\:\#\?]+)/',$_SERVER['HTTP_REFERER'],$ref);
+	$referer= parse_url($_SERVER['HTTP_REFERER']);
  	
-
  	$iploc=new ip2loc($db);
  	$userip=$iploc::getip();
  	$ip=empty($ip)?$userip:$ip;
- 	$user_identity=$referer?$referer:$userip;
+ 	$user_identity=$referer&&array_key_exists('host', $referer)?$referer['host']:$userip;
 
  	if(get_api_permission($db,$user_identity,$_CONFIG['api']['api_nokey_search_perday'])){
+ 		$api['code']=0;
+ 	switch($type){
 
+ 		case 'calc':
+ 		$iploc->getcalculateip($ip);
+ 		$result=$iploc->getresult();
+ 		switch($result['type']){
+ 			case $iploc::IP_IPV6:
+ 			case $iploc::IP_IPV6_RESERVED:	
+ 			$api['ip']=$result['raw'];
+ 			$api['type']=$result['type'];
+ 			$api['ipv6_calc']=$result['ipv6'];
+ 			break;
+ 			case $iploc::IP_IPV4:
+ 			case $iploc::IP_IPV4_INT:
+ 			case $iploc::IP_IPV4_RESERVED:
+ 			case $iploc::IP_IPV6_V4MAPPED:
+ 			$api['ip']=$result['raw'];
+ 			$api['type']=$result['type'];
+ 			$api['ipv4_calc']=$result['ipv4'];
+ 			$api['ipv6_v4mapped_calc']=$result['ipv6v4mapped'];
+ 			break;
+
+ 			default:
+ 			case $iploc::IP_NOT_CALC_IP:
+ 			$api['code']=1;
+ 			$api['msg']=$_CONFIG['api']['output_nocalculateip'];
+
+ 		}
+ 		break;
+ 		default:
+ 		$iploc->getlocation($ip);
+ 		$result=$iploc->getresult();
  		
+ 		switch($result['type']){
+ 			case $iploc::IP_IPV4:
+ 			case $iploc::IP_IPV6:
+ 			case $iploc::IP_IPV6_V4MAPPED:
+ 			case $iploc::IP_IPV6_RESERVED:
+ 			case $iploc::IP_IPV4_RESERVED:
+ 			case $iploc::IP_IPV4_INT:
+ 			$api['ip']=$result['raw'];
+ 			$api['type']=$result['type'];
+ 			$api['continent']=$_CONFIG['continent'][$result['cocode']][1];
+ 			$api['country']=$result['ccname'];
+ 			$api['region']=$result['rname'];
+ 			$api['city']=$result['ciname'];
+ 			$api['isp']=$result['isp'];
+ 			break;
+ 			case $iploc::IP_URL:
+ 			$api['type']=$result['type'];
+ 			$api['domain']=$result['raw'];
+ 			$api['data']=array();
+ 			$eachip=array();
+ 			foreach ($result['result'] as $key => $value) {
+ 				$eachip['ip']=$value['ip'];
+ 				$eachip['type']=$value['dnstype'];
+ 				$eachip['continent']=$_CONFIG['continent'][$value['cocode']][1];
+ 				$eachip['country']=$value['ccname'];
+ 				$eachip['region']=$value['rname'];
+ 				$eachip['city']=$value['ciname'];
+ 				$eachip['isp']=$value['isp'];
+ 				array_push($api['data'], $eachip);
+ 			}
+ 			break;
+ 			case $iploc::IP_INVALID:
+ 			default:
+ 			$api['code']=1;
+ 			$api['msg']=$_CONFIG['api']['output_wrongformat'];
+	
+ 		}
  	}
+ 			
+ 	}
+ 	else{
+ 		$api['code']=1;
+ 		$api['msg']=$_CONFIG['api']['output_overtime'];
+ 	}
+
  	switch($type){
  		case 'text':
+ 		header('Content-Type: text/plain');
+ 		array_shift($api);
+ 		if(array_key_exists('data', $api)){
+ 			foreach($api['data'] as $k =>&$v){
+ 				$v=implode(' ', $v);
+ 			}
+ 			$api['data']=implode("\r\n", $api['data']);
+ 		}
+ 		echo implode("\r\n", $api);
  		break;
- 		case:'jsonp':
+ 		case  'js':
+ 		header ( 'Content-Type:application/javascript' );
+ 		$get_jsfunction=get_jsfunction($api);
+ 		if(count($get_jsfunction)>0){
+ 			echo implode("\r\n", $get_jsfunction);
+ 		}
+ 		
  		break;
- 		case:'nf':
  		case 'json':
+ 		case 'calc':
  		default:
+ 		if(empty($callback)){
+ 			header ( 'Content-Type:application/json' );
+ 			echo json_encode ( $api);
+ 		}else{//jsonp
+ 			header ( 'Content-Type:application/javascript' );
+ 			echo 'if(window.'.$callback.'){'.$callback.'('.json_encode($api).');};';
+ 		}
+ 		
+
  	}
+ 	 //var_dump($result);
+}
+function get_jsfunction($source,$dup=0){
+	$res=array();
+
+ 		foreach ($source as $k=>$v) {
+ 			if(is_array($v)){
+ 				$sub_res=get_jsfunction($v,is_numeric($k)?++$dup:0);
+ 				$res=array_merge($res,$sub_res);
+ 			}
+ 			else array_push($res, 'function get_blueera_'.$k.($dup?'_'.$dup:'').'{return "'.$v.'"};');
+ 		}
+ 		return $res;
 }
 
 function get_api_permission(PDO $db,$identity,$max_search=1000){
 		$date = date ( 'Ymd' );
-		$count_today = $db->query( "SELECT `count` FROM `api_user` WHERE `date`={$date} AND `identify`='{$identity}' limit 1" );
+		$count_today = $db->query( "SELECT `count` FROM `api_user` WHERE `date`={$date} AND `identify`='{$identity}' limit 1");
 		if($count_today===false){
 			die('db error');
 		}
@@ -69,77 +171,3 @@ function get_api_permission(PDO $db,$identity,$max_search=1000){
 		return 0;
 	}
 }
-
-function a(){}
-// 	$timenow = time ();
-// 	$api = array ();
-// 	$api ['code'] = 0;
-// 	// 查询用户资格
-// 	//$e_sql = empty ( $key ) ? "`userip`='{$userip}'" : "`key`='{$key}'";
-// 	$e_sql =!empty($key)?$key:($referer?$ref[1]:$userip);
-// 	//die($e_sql);
-// 	$count_before = $ipl->querydb ( "SELECT count FROM `api_user` WHERE `date`={$date} AND `identify`='{$e_sql}'" );
-// 	if ($count_before [0] ['count'] > 0 && $count_before [0] ['count'] < NOKEY_PERDAY) {
-// 		$ipl->querydb ( "UPDATE `api_user` SET `count`=`count`+1  WHERE `date`={$date} AND `identify`='{$e_sql}'" );
-// 		$can_search = true;
-// 	} elseif ($count_before [0] [count] == 0) {
-// 		$ipl->querydb ( "INSERT INTO `api_user` VALUES (null,'{$e_sql}','{$date}',1)" );
-// 		$can_search = true;
-// 	} else {
-// 		$can_search = false;
-// 		$api ['code'] = 1;
-// 		$api ['msg'] = $err_op [1];
-// 	}
-
-// 	//有使用权限	
-// 	if ($can_search) {
-// 		$loc = $ipl->getlocation ( $ip );
-		
-// 		if ($loc ['type'] != 0) {
-// 			$ipl->querydb ( "INSERT INTO `sitehistory` VALUES(null,'{$userip}','{$loc['in1']}',{$timenow},2)" );
-			
-// 			// generate array
-// 			$api ['ip'] = $loc ['in2'];
-// 			$api ['country'] = $loc ['ccname'];
-// 			$api ['province'] = $loc ['rcname'];
-// 			$api ['city'] = $loc ['ci'];
-// 			$api ['isp'] = $loc ['isp'];
-// 		} else {
-// 			$api ['code'] = 1;
-// 			$api ['msg'] = $err_op [2];
-// 		}
-// 	}
-
-// 	//制定输出格式	
-// 	switch ($type) {
-// 		case 'text' :
-// 			header ( 'Content-Type:text/plain' );
-// 			array_shift ( $api );
-// 			echo implode ( ' ', $api );
-// 			break;
-// 			// case 'php':
-// 			// foreach($api as $k=>$v)$con[]=$k.'=>"'.$v.'"';
-// 			// echo '$blueera_ipapi=array('.implode(',',$con).');';
-// 			break;
-// 		case 'js' :
-// 			header ( 'Content-Type:application/x-javascript' );
-// 			echo 'function get_blueera_status(){return ' . ($api ['code'] == 0 ? 'true' : 'false') . '}' . "\r\n";
-// 			if ($api ['code'] == 0)
-// 				echo 'function get_blueera_country(){return "' . $api ['country'] . '"}' . "\r\n",
-// 			 'function get_blueera_province(){return "' . $api ['province'] . '"}' . "\r\n",
-// 			 'function get_blueera_city(){return "' . $api ['city'] . '"}' . "\r\n",
-// 			 'function get_blueera_isp(){return "' . $api ['isp'] . '"}' . "\r\n";
-// 			break;
-// 		case 'json' :
-// 		default :
-			
-// 			if (empty ( $callback )) {
-// 				header ( 'Content-Type:application/json' );
-// 				echo json_encode ( $api );
-// 			} else {
-// 				header ( 'Content-Type:application/x-javascript' );
-// 				echo "if(window.{$callback}){" . $callback . '(' . json_encode ( $api ) . ');}';
-// 			}
-// 	}
-// }
-?>
