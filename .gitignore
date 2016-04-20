@@ -1,5 +1,5 @@
 #.gitignore
-templates_c
+.idea
 *.swp
 *.txt
 sftp-config.json

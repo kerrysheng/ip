@@ -1,3 +1,3 @@
-ip
+#ip geolocation system
 
-ip geolocation system  at ip.blueera.net
+version 6.0
