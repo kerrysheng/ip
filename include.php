@@ -43,3 +43,9 @@ class Spent_Time
     }
 }
 
+class Ret_Code{
+    const RET_OK=0;
+    const RET_IP_ERROR=1;
+    const RET_DB_ERROR=2;
+    const RET_INTERNAL_ERROR=3;
+}

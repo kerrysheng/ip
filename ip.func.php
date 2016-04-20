@@ -1,4 +1,6 @@
 <?php
+
+
 function quan_convert($str)
 {
     $quan_map = array('ａ', 'ｂ', 'ｃ', 'ｄ', 'ｅ', 'ｆ', 'ｇ', 'ｈ', 'ｉ', 'ｊ', 'ｋ', 'ｌ', 'ｍ', 'ｎ', 'ｏ',
@@ -17,13 +19,7 @@ function quan_convert($str)
         '?', '$', '#', '%', '@', '&', '*',
         '.', '/', '$',
         '');
-//$str_map=str_split($str);
-//foreach($str_map as $a =>&$b){
-//	foreach ($quan_map as $k=>$v){
-//		if($b==$v){$b=$nomal_map[$k];
-//		break;}
-//	}
-//}
+
     $str_map = str_replace($quan_map, $normal_map, $str);
     return $str_map;
 }
@@ -69,5 +65,3 @@ function get_variable($key, $type = 'G', $default_value = '')
     if (!$has_value) return $default_value;
     return $var[$key];
 }
-
-?>

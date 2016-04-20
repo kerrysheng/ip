@@ -71,18 +71,111 @@ class IPLoc
     public function get_location($ip)
     {
         $loc_ret = $this->query_db($ip);
-        $result = array();
+        $ip_model = new IPLoc_Model();
 
-        $loc_ret->bindColumn('rcountry', $result['country']);
-        $loc_ret->bindColumn('rregion', $result['region']);
-        $loc_ret->bindColumn('rcity', $result['city']);
-        $loc_ret->bindColumn('risp', $result['isp']);
-        $loc_ret->bindColumn('country', $result['country_alpha2']);
+        $ret = $loc_ret->fetch(PDO::FETCH_ASSOC);
+        $ip_model->setCountry($ret['rcountry']);
+        $ip_model->setRegion($ret['rregion']);
+        $ip_model->setCity($ret['rcity']);
+        $ip_model->setIsp($ret['risp']);
+        $ip_model->setCountryAlpha2($ret['country']);
+        return $ip_model;
+    }
 
-        $loc_ret->fetch(PDO::FETCH_ASSOC);
 
-        var_dump($result, $this->last_query_time);
+}
 
+class IPLoc_Model
+{
+    private $country;
+    private $region;
+    private $city;
+    private $isp;
+    private $country_alpha2;
+
+    /**
+     * @return mixed
+     */
+    public function getCountry()
+    {
+        return $this->country;
+    }
+
+    /**
+     * @param mixed $country
+     */
+    public function setCountry($country)
+    {
+        $this->country = $country == null ? '' : $country;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRegion()
+    {
+        return $this->region;
+    }
+
+    /**
+     * @param mixed $region
+     */
+    public function setRegion($region)
+    {
+        $this->region = $region == null ? '' : $region;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCity()
+    {
+        return $this->city;
+    }
+
+    /**
+     * @param mixed $city
+     */
+    public function setCity($city)
+    {
+        $this->city = $city == null ? '' : $city;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIsp()
+    {
+        return $this->isp;
+    }
+
+    /**
+     * @param mixed $isp
+     */
+    public function setIsp($isp)
+    {
+        $this->isp = $isp == null ? '' : $isp;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCountryAlpha2()
+    {
+        return $this->country_alpha2;
+    }
+
+    /**
+     * @param mixed $country_alpha2
+     */
+    public function setCountryAlpha2($country_alpha2)
+    {
+        $this->country_alpha2 = $country_alpha2 = null ? '' : $country_alpha2;
+    }
+
+    public function getAll()
+    {
+        return get_object_vars($this);
     }
 
 
