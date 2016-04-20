@@ -8,13 +8,14 @@
 
 define('DS', DIRECTORY_SEPARATOR);
 define('SROOT', dirname(__file__) . DS);
-define('AURL', 'http://' . $_SERVER['HTTP_HOST'] . substr($_SERVER['REQUEST_URI'], 0, strrpos($_SERVER['REQUEST_URI'], '/')));
 
-require_once (SROOT . 'config.php');
-require_once (SROOT . 'ip.class.php');
-require_once (SROOT . 'ip.func.php');
+require_once(SROOT . 'config.php');
+//require_once(SROOT . 'ip.class.php');
+require_once(SROOT . 'ip.func.php');
 
-
+spl_autoload_register(function($class){
+   include_once strtolower($class).'.class.php';
+});
 // class runtime {
 //     var $StartTime = 0;
 //     var $StopTime = 0;
@@ -34,10 +35,10 @@ require_once (SROOT . 'ip.func.php');
 //         ;
 //     }
 // }
-try{
-$db=new PDO("mysql:host={$_CONFIG['db']['server']};dbname={$_CONFIG['db']['database']}",$_CONFIG['db']['user'],$_CONFIG['db']['password']);
-}catch(PDOException $e){
-    exit( $e->getmessage());
-}
+//try {
+//    $db = new PDO("mysql:host={$_CONFIG['db']['server']};dbname={$_CONFIG['db']['database']}", $_CONFIG['db']['user'], $_CONFIG['db']['password']);
+//} catch (PDOException $e) {
+//    exit($e->getmessage());
+//}
 
 //$timerun = new runtime();
