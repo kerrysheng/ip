@@ -54,10 +54,11 @@ class IPLoc
         $ret_stmt = $this->db->prepare("select k.*,ccountry.content as rcountry,cregion.content as rregion,ccity.content as rcity,cisp.content as risp from (select * from tbip where :ip >= ip1 order by ip1 desc limit 1) as k left join tbipd as ccountry on k.country=ccountry.symbol and ccountry.language= :lang left join tbipd as cregion on k.region=cregion.symbol and cregion.language= :lang left join tbipd as ccity on k.city=ccity.symbol and ccity.language= :lang left join tbipd as cisp on k.isp=cisp.symbol and cisp.language=:lang where k.ip2>= :ip ;");
         $ret_stmt->bindParam('ip', $ip);
         $ret_stmt->bindParam('lang', $lang);
-        $sql_start_time = microtime(true);
+        $db_exec_time = new Spent_Time();
+        $db_exec_time->start();
         $ret_stmt->execute();
-        $sql_end_time = microtime(true);
-        $this->last_query_time = ($sql_end_time - $sql_start_time) * 1000;
+        $db_exec_time->stop();
+        $this->last_query_time = $db_exec_time->spent();
 
         if ($return_stat)
             return $ret_stmt;
@@ -78,7 +79,7 @@ class IPLoc
         $loc_ret->bindColumn('risp', $result['isp']);
         $loc_ret->bindColumn('country', $result['country_alpha2']);
 
-        $loc = $loc_ret->fetch(PDO::FETCH_ASSOC);
+        $loc_ret->fetch(PDO::FETCH_ASSOC);
 
         var_dump($result, $this->last_query_time);
 
