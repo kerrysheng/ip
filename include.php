@@ -49,3 +49,4 @@ class Ret_Code{
     const RET_DB_ERROR=2;
     const RET_INTERNAL_ERROR=3;
 }
+

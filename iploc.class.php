@@ -5,10 +5,10 @@
  */
 class IPLoc
 {
-    private $db_param = array();
-    private $db;
-    private $tb;
-    private $column;
+    protected $db_param = array();
+    protected $db;
+    //private $tb;
+    //private $column;
     public $last_query_time = 0;
 
     function __construct($db)
@@ -48,10 +48,10 @@ class IPLoc
         return $ip ? $ip : $_SERVER ['REMOTE_ADDR'];
     }
 
-    private function query_db($ip, $lang = 'cn', $return_stat = true)
+    protected function query_db($ip, $lang = 'cn', $return_stat = true)
     {
 
-        $ret_stmt = $this->db->prepare("select k.*,ccountry.content as rcountry,cregion.content as rregion,ccity.content as rcity,cisp.content as risp from (select * from tbip where :ip >= ip1 order by ip1 desc limit 1) as k left join tbipd as ccountry on k.country=ccountry.symbol and ccountry.language= :lang left join tbipd as cregion on k.region=cregion.symbol and cregion.language= :lang left join tbipd as ccity on k.city=ccity.symbol and ccity.language= :lang left join tbipd as cisp on k.isp=cisp.symbol and cisp.language=:lang where k.ip2>= :ip ;");
+        $ret_stmt = $this->db->prepare("select k.*,ccountry.content as rcountry from (select * from tbip where :ip >= ip1 order by ip1 desc limit 1) as k left join tbipd as ccountry on k.country=ccountry.symbol and ccountry.language= :lang where k.ip2>= :ip ;");
         $ret_stmt->bindParam('ip', $ip);
         $ret_stmt->bindParam('lang', $lang);
         $db_exec_time = new Spent_Time();
@@ -75,9 +75,10 @@ class IPLoc
 
         $ret = $loc_ret->fetch(PDO::FETCH_ASSOC);
         $ip_model->setCountry($ret['rcountry']);
-        $ip_model->setRegion($ret['rregion']);
-        $ip_model->setCity($ret['rcity']);
-        $ip_model->setIsp($ret['risp']);
+        $ip_model->setRegion($ret['region']);
+        $ip_model->setCity($ret['city']);
+        $ip_model->setCounty($ret['county']);
+        $ip_model->setIsp($ret['isp']);
         $ip_model->setCountryAlpha2($ret['country']);
         return $ip_model;
     }
@@ -90,8 +91,25 @@ class IPLoc_Model
     private $country;
     private $region;
     private $city;
+    private $county;
     private $isp;
     private $country_alpha2;
+
+    /**
+     * @return mixed
+     */
+    public function getCounty()
+    {
+        return $this->county;
+    }
+
+    /**
+     * @param mixed $county
+     */
+    public function setCounty($county)
+    {
+        $this->county = $county == null ? '' : $county;
+    }
 
     /**
      * @return mixed

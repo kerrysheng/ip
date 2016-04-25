@@ -12,7 +12,47 @@ $cb = get_variable('callback', 'gp');
 $api = array();
 $api['code'] = 0;
 $api['ip'] = $ip_addr;
-$api = array_merge($api, $ip_geo_result->getAll());
+$api['country'] = $ip_geo_result->getCountryAlpha2();
+if (empty($ip_geo_result->getCity()) && !empty($ip_geo_result->getCounty())) {
+    $location = array(
+        $ip_geo_result->getCountry(),
+        $ip_geo_result->getRegion(),
+        $ip_geo_result->getCounty(),
+        $ip_geo_result->getIsp()
+    );
+    $area = array(
+        $ip_geo_result->getCountry(),
+        $ip_geo_result->getRegion(),
+        $ip_geo_result->getCounty()
+    );
+    $api['location'] = implode(' ', array_filter($location, function ($v) {
+        return !empty($v);
+    }));
+    $api['area'] = implode(' ', array_filter($area, function ($v) {
+        return !empty($v);
+    }));
+} else {
+    $location = array(
+        $ip_geo_result->getCountry(),
+        $ip_geo_result->getRegion(),
+        $ip_geo_result->getCity(),
+        $ip_geo_result->getIsp()
+    );
+    $area = array(
+        $ip_geo_result->getCountry(),
+        $ip_geo_result->getRegion(),
+        $ip_geo_result->getCity(),
+        $ip_geo_result->getCounty()
+    );
+    $api['location'] = implode(' ', array_filter($location, function ($v) {
+        return !empty($v);
+    }));
+    $api['area'] = implode(' ', array_filter($area, function ($v) {
+        return !empty($v);
+    }));
+}
+
+//$api = array_merge($api, $ip_geo_result->getAll());
 
 switch ($format) {
     case 'json':
