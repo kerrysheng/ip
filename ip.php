@@ -7,7 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="static/css/bootstrap.min.css" rel="stylesheet">
     <style>
-
+        #IpCountryFlag {
+            display: inline-block;
+            vertical-align: bottom;
+        }
     </style>
 </head>
 
@@ -78,7 +81,17 @@
                 $('#IpAreaValue').text(data.area);
                 $('#IpIspValue').text(data.isp);
 
-                //$('#IpCountryFlag').html($('<img />').attr('src', './static/images/flags/' + (data.country.toLowerCase()) + '.png'))
+                var countryCode = data.country.toLowerCase();
+
+                if (countryCode == 'iana' || countryCode == '') {
+                    $('#IpCountryFlag').hide();
+                } else {
+                    var cflag = $('<img />').attr('src', 'static/flags/4x3/' + countryCode + '.svg').css({
+                        width: 35, height: 24
+                    });
+                    $('#IpCountryFlag').html(cflag).show();
+                }
+
             }
         })
     }
