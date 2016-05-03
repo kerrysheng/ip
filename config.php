@@ -21,3 +21,8 @@ $_CONFIG['column']['isp'] = 'isp';
 $_CONFIG['tb']['loc']='tbipd';
 $_CONFIG['column']['definition']='';
 $_CONFIG['column']['value']='';
+
+$_CONFIG['dns']=array(
+    array('安徽电信','61.132.163.68','61.132.163.68'),
+    array('广东电信','202.96.128.86','202.96.134.33')
+);

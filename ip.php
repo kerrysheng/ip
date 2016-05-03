@@ -7,23 +7,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="static/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        .wrap-header{
-            margin:40px auto;
+        .wrap-header {
+            margin: 40px auto;
             text-align: center;
         }
-        .wrap-body{
+
+        .wrap-body {
             margin: 0 auto;
             text-align: center;
         }
-        .form-inline{
+
+        .form-inline {
             padding: 10px;
         }
-        .res-location span{
+
+        .res-location span {
             margin-right: 10px;
         }
-        .wrap-footer{
 
+        .api-instruction {
+            margin: 70px auto;
+            width: 75%;
+            background: #f7f7f9;
+            padding: 10px;
         }
+
+        .table-let-fix {
+            width: 75%;
+            margin: 0 auto;
+        }
+
+        .wrap-footer {
+            height: 30px;
+        }
+
         #IpCountryFlag {
             display: inline-block;
             vertical-align: bottom;
@@ -33,7 +50,7 @@
 
 <body>
 <div class="wrap-header">
-<h2>蓝色年代IP查询系统</h2>
+    <h2>蓝色年代IP查询系统</h2>
 </div>
 <div class="wrap-body">
 
@@ -52,6 +69,79 @@
             <h3>您查询的IP:<span id="IpAddr"></span> <span id="IpCountryFlag"></span></h3>
         </div>
     </div>
+
+    <div class="api-instruction">
+        本系统的API如下:<code>https://www.blueera.net/ip/api/{ip_address}/{result_format}/{json_callback}</code>
+    </div>
+    <table class="table table-bordered table-striped  table-let-fix">
+        <thead>
+        <tr>
+            <td>Name</td>
+            <td>Classify</td>
+            <td>Default Value</td>
+            <td>Available Choice</td>
+            <td>Comment</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td><code>ip_address</code></td>
+            <td>请求参数</td>
+            <td>访问者IP</td>
+            <td>任意IP</td>
+            <td>需要查询的IP地址</td>
+        </tr>
+        <tr>
+            <td><code>result_format</code></td>
+            <td>请求参数</td>
+            <td><code>json</code></td>
+            <td><code>json</code>|<code>jsonp</code>|<code>text</code></td>
+            <td>返回的数据格式</td>
+        </tr>
+        <tr>
+            <td><code>json_callback</code></td>
+            <td>请求参数</td>
+            <td></td>
+            <td>任意字符</td>
+            <td>回调函数名</td>
+        </tr>
+        <tr>
+            <td><code>code</code></td>
+            <td>返回结果</td>
+            <td>返回结果码</td>
+            <td><code>0</code>|正整数</td>
+            <td>标示返回结果集的正确性</td>
+        </tr>
+        <tr>
+            <td><code>country</code></td>
+            <td>返回结果</td>
+            <td>国家码</td>
+            <td>ISO—3166国家码</td>
+            <td>返回查询IP的国家码</td>
+        </tr>
+        <tr>
+            <td><code>location</code></td>
+            <td>返回结果</td>
+            <td>IP地址对应的位置</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td><code>area</code></td>
+            <td>返回结果</td>
+            <td>IP地址对应的区域</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td><code>isp</code></td>
+            <td>返回结果</td>
+            <td>IP地址对应的运营商</td>
+            <td></td>
+            <td></td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 <div class="wrap-footer">
 
