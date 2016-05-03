@@ -26,7 +26,7 @@
         }
 
         .api-instruction {
-            margin: 70px auto;
+            margin: 70px auto 30px;
             width: 75%;
             background: #f7f7f9;
             padding: 10px;
@@ -60,14 +60,22 @@
         <button type="button" class="btn btn-primary" id="submitBtn">查询</button>
     </div>
     <div class="result-blk">
-        <div class="res-location hidden">
-            该IP的物理地址:<span id="IpLocation"></span> <span id="IpArea">所在区域:<span
-                    id="IpAreaValue"></span></span> <span
-                id="IpIsp">运营商:<span id="IpIspValue"></span></span>
+        <div class="res-valid hidden">
+            <div class="res-location">
+                该IP的物理地址:<span id="IpLocation"></span> <span id="IpArea">所在区域:<span
+                        id="IpAreaValue"></span></span> <span
+                    id="IpIsp">运营商:<span id="IpIspValue"></span></span>
+            </div>
+            <div class="res-title">
+                <h3>您查询的IP:<span id="IpAddr"></span> <span id="IpCountryFlag"></span></h3>
+            </div>
         </div>
-        <div class="res-title hidden">
-            <h3>您查询的IP:<span id="IpAddr"></span> <span id="IpCountryFlag"></span></h3>
+        <div class="res-invalid hidden">
+            <div class="res-warning">
+                <h3>您输入的IP:<span id="IpAddrInvalid"></span> <span class="ip-res-warning"></span></h3>
+            </div>
         </div>
+
     </div>
 
     <div class="api-instruction">
@@ -77,7 +85,7 @@
         <thead>
         <tr>
             <td>Name</td>
-            <td>Classify</td>
+            <td>Classification</td>
             <td>Default Value</td>
             <td>Available Choice</td>
             <td>Comment</td>
@@ -108,37 +116,37 @@
         <tr>
             <td><code>code</code></td>
             <td>返回结果</td>
-            <td>返回结果码</td>
+            <td></td>
             <td><code>0</code>|正整数</td>
             <td>标示返回结果集的正确性</td>
         </tr>
         <tr>
             <td><code>country</code></td>
             <td>返回结果</td>
-            <td>国家码</td>
+            <td></td>
             <td>ISO—3166国家码</td>
             <td>返回查询IP的国家码</td>
         </tr>
         <tr>
             <td><code>location</code></td>
             <td>返回结果</td>
+            <td></td>
+            <td>位置信息</td>
             <td>IP地址对应的位置</td>
-            <td></td>
-            <td></td>
         </tr>
         <tr>
             <td><code>area</code></td>
             <td>返回结果</td>
+            <td></td>
+            <td>区域</td>
             <td>IP地址对应的区域</td>
-            <td></td>
-            <td></td>
         </tr>
         <tr>
             <td><code>isp</code></td>
             <td>返回结果</td>
+            <td></td>
+            <td>运营商</td>
             <td>IP地址对应的运营商</td>
-            <td></td>
-            <td></td>
         </tr>
         </tbody>
     </table>
@@ -182,8 +190,9 @@
         request(ip).done(function (data) {
 
             if (data && data.code === 0) {
-                $('.res-location').removeClass('hidden');
-                $('.res-title').removeClass('hidden');
+                $('.res-valid').removeClass('hidden');
+                $('.res-invalid').addClass('hidden');
+
 
                 if (data.area != data.location) {
                     $('#IpArea').removeClass('hidden');
@@ -212,6 +221,13 @@
                     });
                     $('#IpCountryFlag').html(cflag).show();
                 }
+
+            }
+            else {
+                $('.res-valid').addClass('hidden');
+                $('.res-invalid').removeClass('hidden');
+                $('#IpAddrInvalid').text(ip);
+                $('.ip-res-warning').text(data.msg);
 
             }
         })
