@@ -5,6 +5,8 @@ $_CONFIG['db']['user'] = 'postgres';
 $_CONFIG['db']['password'] = '';
 $_CONFIG['db']['database'] = 'postgres';
 
+$_CONFIG['redis']['server']='127.0.0.1';
+
 date_default_timezone_set('asia/shanghai');
 
 error_reporting(E_ALL & ~E_NOTICE);

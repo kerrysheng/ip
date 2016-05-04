@@ -12,10 +12,13 @@ define('SROOT', dirname(__file__) . DS);
 require_once(SROOT . 'config.php');
 //require_once(SROOT . 'ip.class.php');
 require_once(SROOT . 'ip.func.php');
+require_once (SROOT.'vendor'.DS.'redis'.DS.'Autoloader.php');
 
 spl_autoload_register(function ($class) {
     include_once strtolower($class) . '.class.php';
 });
+
+Predis\Autoloader::register();
 
 
 class Spent_Time
@@ -55,3 +58,5 @@ class Ret_Code{
     );
 }
 
+
+$redis=new Predis\Client();

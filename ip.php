@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>IP查询系统</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     <link href="static/css/bootstrap.min.css" rel="stylesheet">
     <style>
         .wrap-header {
@@ -30,11 +30,20 @@
             width: 75%;
             background: #f7f7f9;
             padding: 10px;
+            white-space: nowrap;
         }
 
         .table-let-fix {
             width: 75%;
             margin: 0 auto;
+        }
+        .table-let-fix tbody tr{
+            background-color:#f9f9f9
+        }
+        .table-let-fix thead{
+            background: #474747;
+            color:#ffffff;
+
         }
 
         .wrap-footer {
@@ -45,6 +54,27 @@
             display: inline-block;
             vertical-align: bottom;
         }
+
+        @media (max-width: 540px) {
+            .table-let-fix {
+                width: 100%
+            }
+            .table-let-fix td{
+                display: block;
+            }
+            /*.table-let-fix thead{*/
+                /*display: none;*/
+            /*}*/
+            .table-let-fix tbody tr:nth-child(n){
+                background-color: #ffffff;
+            }
+        }
+
+        @media (max-width: 1000px) {
+            .api-instruction {
+                overflow-x: scroll;
+            }
+        }
     </style>
 </head>
 
@@ -52,7 +82,7 @@
 <div class="wrap-header">
     <h2>蓝色年代IP查询系统</h2>
 </div>
-<div class="wrap-body">
+<div class="wrap-body container">
 
 
     <div class="form-inline">
@@ -81,7 +111,7 @@
     <div class="api-instruction">
         本系统的API如下:<code>https://www.blueera.net/ip/api/{ip_address}/{result_format}/{json_callback}</code>
     </div>
-    <table class="table table-bordered table-striped  table-let-fix">
+    <table class="table  table-let-fix">
         <thead>
         <tr>
             <td>Name</td>
@@ -116,35 +146,35 @@
         <tr>
             <td><code>code</code></td>
             <td>返回结果</td>
-            <td></td>
+            <td>-</td>
             <td><code>0</code>|正整数</td>
             <td>标示返回结果集的正确性</td>
         </tr>
         <tr>
             <td><code>country</code></td>
             <td>返回结果</td>
-            <td></td>
+            <td>-</td>
             <td>ISO—3166国家码</td>
             <td>返回查询IP的国家码</td>
         </tr>
         <tr>
             <td><code>location</code></td>
             <td>返回结果</td>
-            <td></td>
+            <td>-</td>
             <td>位置信息</td>
             <td>IP地址对应的位置</td>
         </tr>
         <tr>
             <td><code>area</code></td>
             <td>返回结果</td>
-            <td></td>
+            <td>-</td>
             <td>区域</td>
             <td>IP地址对应的区域</td>
         </tr>
         <tr>
             <td><code>isp</code></td>
             <td>返回结果</td>
-            <td></td>
+            <td>-</td>
             <td>运营商</td>
             <td>IP地址对应的运营商</td>
         </tr>

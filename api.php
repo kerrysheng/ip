@@ -1,6 +1,6 @@
 <?php
 
-require_once 'include.php';
+require 'include.php';
 
 $ip_addr = get_variable('ip', 'gp');
 $format = get_variable('format', 'gp', 'json');
