@@ -54,10 +54,12 @@ class Ret_Code
     const RET_IP_ERROR = 1;
     const RET_DB_ERROR = 2;
     const RET_INTERNAL_ERROR = 3;
+    const RET_OVERHEAD = 4;
 
     const ERR_MSG = array(
         self::RET_IP_ERROR => '输入IP有误',
-        self::RET_DB_ERROR => '数据库查询有误'
+        self::RET_DB_ERROR => '数据库查询有误',
+        self::RET_OVERHEAD => '超过查询限制'
     );
 }
 

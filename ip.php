@@ -126,7 +126,7 @@
             <td><code>ip_address</code></td>
             <td>请求参数</td>
             <td>访问者IP</td>
-            <td>任意IP</td>
+            <td>任意IP|<code>my</code></td>
             <td>需要查询的IP地址</td>
         </tr>
         <tr>
