@@ -16,6 +16,9 @@ if (!filter_var($ip_addr, FILTER_VALIDATE_IP)) {
     $ip_geo = new IPLoc($_CONFIG['db']);
     $ip_geo_result = $ip_geo->get_location($ip_addr);
 
+    $redis_sto[$ip_addr]=time();
+
+    IPStat::set_item($redis,$ip_addr);
 
     $api['code'] = 0;
     $api['ip'] = $ip_addr;

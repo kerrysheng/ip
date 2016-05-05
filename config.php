@@ -11,7 +11,6 @@ date_default_timezone_set('asia/shanghai');
 
 error_reporting(E_ALL & ~E_NOTICE);
 
-
 $_CONFIG['tb']['ip'] = 'tbip';
 $_CONFIG['column']['ip_start'] = 'ip1';
 $_CONFIG['column']['ip_end'] = 'ip2';

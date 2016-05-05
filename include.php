@@ -12,10 +12,12 @@ define('SROOT', dirname(__file__) . DS);
 require_once(SROOT . 'config.php');
 //require_once(SROOT . 'ip.class.php');
 require_once(SROOT . 'ip.func.php');
-require_once (SROOT.'vendor'.DS.'redis'.DS.'Autoloader.php');
+require_once(SROOT . 'vendor' . DS . 'redis' . DS . 'Autoloader.php');
 
 spl_autoload_register(function ($class) {
-    include_once strtolower($class) . '.class.php';
+    $file = strtolower($class) . '.class.php';
+    if (is_file($file))
+        include_once $file;
 });
 
 Predis\Autoloader::register();
@@ -46,17 +48,18 @@ class Spent_Time
     }
 }
 
-class Ret_Code{
-    const RET_OK=0;
-    const RET_IP_ERROR=1;
-    const RET_DB_ERROR=2;
-    const RET_INTERNAL_ERROR=3;
+class Ret_Code
+{
+    const RET_OK = 0;
+    const RET_IP_ERROR = 1;
+    const RET_DB_ERROR = 2;
+    const RET_INTERNAL_ERROR = 3;
 
-    const ERR_MSG=array(
-        self::RET_IP_ERROR=>'输入IP有误',
-        self::RET_DB_ERROR=>'数据库查询有误'
+    const ERR_MSG = array(
+        self::RET_IP_ERROR => '输入IP有误',
+        self::RET_DB_ERROR => '数据库查询有误'
     );
 }
 
 
-$redis=new Predis\Client();
+$redis = new Predis\Client();
