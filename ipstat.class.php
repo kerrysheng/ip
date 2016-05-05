@@ -1,5 +1,13 @@
 <?php
 
+/*
+ * ipGeoRecentList 最近查询IP列表
+ *
+ * ipGeoPerIp{unix_timestamp} {ip} 每个ip每秒访问次数
+ *
+ * ipGeoHourlyTotal{date+hour} {format}每个格式每小时访问次数
+ *
+ * */
 
 class IPStat
 {
@@ -12,7 +20,7 @@ class IPStat
     static $redis_instance = null;
     static $stat_date_hour = 0;
 
-    const QUERY_PER_SECOND = 10;
+    const QUERY_PER_SECOND = 30;
 
     public static function get_redis_instance()
     {
