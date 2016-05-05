@@ -1,11 +1,4 @@
 <?php
-/* Mar 24 ,2014
- * IP Geolocation Finder 5.0
- * core ip api for public
- * author:shengyueming@gmail.com
- *
- */
-
 define('DS', DIRECTORY_SEPARATOR);
 define('SROOT', dirname(__file__) . DS);
 

@@ -1,7 +1,21 @@
 <?php
 require 'include.php';
 
-var_dump(IPStat::get_list('desc'));
+$type = get_variable('type', 'gp');
 
-//var_dump(IPStat::get_per_ip_list());
-var_dump(IPStat::get_total_hourly_query());
+$hours = 3 * 24;
+
+switch ($type) {
+    case 'recent':
+    default:
+        echo json_encode(IPStat::get_list('desc'));
+        break;
+    case 'hourly':
+        for ($i = 0; $i < $hours; $i++) {
+            $time = date("YmdH", strtotime('-' . $i . ' hours'));
+            $hourly_output[] = IPStat::get_total_hourly_query($time);
+        }
+        echo json_encode($hourly_output);
+        break;
+}
+

@@ -86,4 +86,9 @@ switch ($format) {
         header('Content-Type:text/plain');
         array_shift($api);
         echo implode("\t", $api);
+    case 'csv':
+        IPStat::set_total_hourly_query('csv');
+        header('Content-Type:text/plain');
+        array_shift($api);
+        echo implode(",", $api);
 }
